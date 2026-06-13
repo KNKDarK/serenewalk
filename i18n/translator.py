@@ -1,29 +1,20 @@
 import json
 import os
 import streamlit as st
-from typing import Optional
-
-class Translator:
-    _instance = None
-    _translations = {}
-    _current_lang = "en"
-
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance._load_translations()
-        return cls._instance
+from typing import Optional, Dict, Any
 
 @st.cache_data
-def _get_translations():
+def _load_translation_data() -> Dict[str, Any]:
     translation_file = os.path.join(os.path.dirname(__file__), "translations.json")
     if os.path.exists(translation_file):
         with open(translation_file, "r", encoding="utf-8") as f:
             return json.load(f)
     return {}
 
-    def _load_translations(self):
-        self._translations = _get_translations()
+class Translator:
+    def __init__(self):
+        self._translations = _load_translation_data()
+        self._current_lang = "en"
 
     def set_language(self, lang_code: str):
         if lang_code in ["en", "te", "hi", "ja"]:
@@ -33,10 +24,6 @@ def _get_translations():
         return self._current_lang
 
     def t(self, key: str, **kwargs) -> str:
-        """
-        Get translation for a key like 'app.title' or 'symptoms.header'.
-        Supports format kwargs: t('greeting', name='Dr. Smith') -> 'Hello, Dr. Smith!'
-        """
         keys = key.split(".")
         value = self._translations
 
@@ -66,7 +53,12 @@ def _get_translations():
             {"code": "ja", "name": "Japanese", "native": "日本語"},
         ]
 
-translator = Translator()
+@st.cache_resource
+def get_translator():
+    return Translator()
+
+# For biological compatibility with existing code
+translator = get_translator()
 
 def t(key: str, **kwargs) -> str:
     return translator.t(key, **kwargs)
