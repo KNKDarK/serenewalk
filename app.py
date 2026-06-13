@@ -37,46 +37,28 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Inter:wght@400;700&family=Noto+Color+Emoji&display=swap');
 
-/* HYPER-SPECIFIC FONT ISOLATION */
-/* We only target the areas that 100% need it for multilingual text */
-
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Inter:wght@400;700&family=Noto+Color+Emoji&display=swap');
-
-/* 1. Language buttons in the sidebar */
-[data-testid="stSidebar"] .stButton button div {
-    font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif !important;
-}
-
-/* 2. Main content medical text */
-#main-content .stMarkdown p, 
-#main-content .stMarkdown li, 
-#main-content .stMarkdown h1, 
-#main-content .stMarkdown h2, 
-#main-content .stMarkdown h3 {
-    font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif !important;
-}
-
-/* 3. Custom cards and banners */
+/* TYPOGRAPHY SHIELD - Target only text-heavy leaf elements */
+.main p, .main li, .main h1, .main h2, .main h3, .main label, 
+.stMetric, .stTextArea textarea, .stTextInput input,
 .emergency-banner, .emergency-header, .result-card, .card-title {
     font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif !important;
 }
 
-/* 4. Text areas and inputs */
-.stTextArea textarea, .stTextInput input {
-    font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif !important;
+/* NATIVE PROTECTION - Leave sidebar and expander chrome to use native fonts */
+/* This prevents the arrow_right text ligature issue on Streamlit Cloud */
+[data-testid="stHeader"], 
+[data-testid="stSidebar"] [data-testid="stSidebarNav"],
+[data-testid="stExpander"] > details > summary {
+    font-family: var(--st-font-family, sans-serif) !important;
 }
 
-/* 5. Metrics */
-[data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
-    font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif !important;
-}
-
-/* ABSOLUTE ICON PROTECTION - Revert all suspected icon containers to native */
-[data-testid="stIcon"], [aria-hidden="true"], svg, i, 
-[data-testid*="Icon"], [data-testid="stExpander"] summary span, 
-[data-testid="stSidebar"] [role="button"] span, summary span {
+/* TOTAL ICON RESTORATION - High specificity override for all possible icons */
+[data-testid*="Icon"], [data-testid="stIcon"], svg, i, [aria-hidden="true"],
+[data-testid="stExpander"] summary span[aria-hidden="true"],
+[data-testid="stSidebar"] [role="button"] span {
     font-family: 'streamlit-icons' !important;
     text-transform: none !important;
+    font-variant-ligatures: common-ligatures !important;
 }
 
 /* Premium UI Styles */
