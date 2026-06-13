@@ -35,38 +35,54 @@ st.set_page_config(
 # Inject CSS
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Inter:wght@400;700&family=Noto+Color+Emoji&display=swap');
+/* ============================================================
+   FONT IMPORTS - Load all multilingual fonts
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap');
 
-/* ISOLATION SHIELD - Target only specific text areas to protect icons */
-
-/* 1. Main Content Markdown and Custom UI */
-.stMarkdown p, .stMarkdown li, .stMarkdown label,
-.stMetric [data-testid="stMetricValue"], .stMetric [data-testid="stMetricLabel"],
-.emergency-banner, .emergency-header, .result-card, .card-title {
-    font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif !important;
-}
-
-/* 2. Text Inputs and Buttons */
-.stTextArea textarea, .stTextInput input, .stButton button div {
-    font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif !important;
-}
-
-/* 3. ABSOLUTE CHROME PROTECTION - Force native fonts for Streamlit UI "Chrome" */
-/* We explicitly exclude headers, the sidebar toggle, and expander headers */
-[data-testid="stHeader"], 
-[data-testid="stSidebarNav"], 
-[data-testid="stSidebar"] [role="button"],
-[data-testid="stExpander"] summary,
-[data-testid="stExpander"] [role="button"] {
-    font-family: var(--st-font-family, "Source Sans Pro", sans-serif) !important;
-}
-
-/* 4. TOTAL ICON RESTORATION - High specificity override for all possible icons */
-[data-testid*="Icon"], [data-testid="stIcon"], svg, i, [aria-hidden="true"],
-summary span[aria-hidden="true"], [role="button"] span {
-    font-family: 'streamlit-icons' !important;
-    text-transform: none !important;
+/* ============================================================
+   STEP 1: LOCK DOWN ALL MATERIAL SYMBOLS / ICONS FIRST
+   This must come before any custom font rules so !important wins
+   ============================================================ */
+.material-symbols-rounded,
+.material-symbols-sharp,
+.material-symbols-outlined,
+.material-icons,
+.stIcon,
+[data-testid="stIcon"] {
+    font-family: 'Material Symbols Rounded', 'Material Icons', 'streamlit-icons' !important;
     font-variant-ligatures: common-ligatures !important;
+    text-transform: none !important;
+    font-size: inherit !important;
+}
+
+/* ============================================================
+   STEP 2: Apply custom multilingual fonts ONLY to safe areas
+   These do NOT touch expander summaries or sidebar toggles
+   ============================================================ */
+
+/* Medical content text */
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] li,
+[data-testid="stMarkdownContainer"] ul,
+[data-testid="stMarkdownContainer"] ol {
+    font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif;
+}
+
+/* Inputs */
+.stTextArea textarea,
+.stTextInput input {
+    font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif;
+}
+
+/* Custom card elements */
+.emergency-banner, .emergency-header, .result-card, .card-title {
+    font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif;
+}
+
+/* Metrics */
+[data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
+    font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif;
 }
 
 /* Premium UI Styles */
