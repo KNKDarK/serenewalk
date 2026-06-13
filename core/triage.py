@@ -39,10 +39,10 @@ SYMPTOM_KEYWORDS = {
         "diabetes", "blood sugar", "insulin", "మధుమేహం", "చక్కెర వ్యాధి", "मधुमेह", "शुगर", "糖尿病", "インスリン"
     ],
     "moderate": [
-        "fever", "cough", "headache", "nausea", "fatigue", "body aches",
-        "జ్వరం", "దగ్గు", "తలనొప్పి", "వాంతులు", "అలసట",
-        "बुखार", "खांसी", "सिरदर्द", "जी मिचलाना", "थकान",
-        "発熱", "咳", "頭痛", "吐き気", "倦怠感", "筋肉痛"
+        "fever", "cough", "headache", "nausea", "fatigue", "body aches", "bleeding",
+        "జ్వరం", "దగ్గు", "తలనొప్పి", "వాంతులు", "అలసట", "రక్తస్రావం",
+        "बुखार", "खांसी", "सिरदर्द", "जी मिचलाना", "थकान", "रक्तस्राव",
+        "発熱", "咳", "頭痛", "吐き気", "倦怠感", "筋肉痛", "出血"
     ],
     "low": [
         "runny nose", "slight cough", "mild headache", "sore throat", "sneezing",
