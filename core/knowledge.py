@@ -6,7 +6,7 @@ from typing import List, Optional
 class KnowledgeBase:
     def __init__(self, path="data/kb"):
         self.path = path
-        self.embed_model = SentenceTransformer("all-MiniLM-L6-v2")
+        self.embed_model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
         self.collection = self._load_collection()
 
     def _load_collection(self):

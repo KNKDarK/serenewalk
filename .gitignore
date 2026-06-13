@@ -5,8 +5,11 @@ models/*.pth
 models/*.onnx
 
 # Data
-data/kb/*.sqlite3
-data/kb/*.db
+data/
+raw_dataset/
+**/raw_dataset/
+**/data/
+!data/.keep
 
 # Python
 __pycache__/
