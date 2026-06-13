@@ -1,0 +1,380 @@
+{
+  "app": {
+    "title": {
+      "en": "AI Medical Advisor",
+      "te": "AI వైద్య సలహాదారు",
+      "hi": "AI चिकित्सा सलाहकार",
+      "ja": "AI 医療アドバイザー"
+    },
+    "subtitle": {
+      "en": "Get intelligent health guidance powered by AI",
+      "te": "AI ద్వారా తెలివైన ఆరోగ్య మార్గదర్శకత్వం పొందండి",
+      "hi": "AI द्वारा संचालित बुद्धिमान स्वास्थ्य मार्गदर्शन प्राप्त करें",
+      "ja": "AIによるインテリジェントな健康ガイダンスを受ける"
+    },
+    "emergency_warning": {
+      "en": "⚠️ This is for informational purposes only. In emergencies, call emergency services immediately.",
+      "te": "⚠️ ఇది కేవలం సమాచార ప్రయోజనాల కోసం మాత్రమే. అత్యవసర పరిస్థితుల్లో, వెంటనే అత్యవసర సేవలను సంప్రదించండి.",
+      "hi": "⚠️ यह केवल सूचना उद्देश्यों के लिए है। आपातकाल में, तुरंत आपातकालीन सेवाओं को कॉल करें.",
+      "ja": "⚠️ これは情報提供のみを目的としています。緊急時には、直ちに緊急サービスに連絡してください。"
+    },
+    "language_label": {
+      "en": "Language",
+      "te": "భాష",
+      "hi": "भाषा",
+      "ja": "言語"
+    },
+    "history": {
+      "en": "Consultation History",
+      "te": "సంప్రదింపు చరిత్ర",
+      "hi": "परामर्श इतिहास",
+      "ja": "相談履歴"
+    },
+    "history_entry": {
+      "en": "Consultation at {time}",
+      "te": "{time} వద్ద సంప్రదింపులు",
+      "hi": "{time} बजे परामर्श",
+      "ja": "{time} の相談"
+    },
+    "sidebar": {
+      "emergency_numbers": {
+        "en": "Emergency Numbers",
+        "te": "అత్యవసర నంబర్లు",
+        "hi": "आपातकालीन नंबर",
+        "ja": "緊急連絡先"
+      },
+      "when_to_seek_emergency": {
+        "en": "When to Seek Emergency Care",
+        "te": "ఎప్పుడు అత్యవసర సంరక్షణ కోరాలి",
+        "hi": "कब आपातकालीन देखभाल लें",
+        "ja": "緊急医療が必要な場合"
+      },
+      "system_status": {
+        "en": "System Status",
+        "te": "సిస్టమ్ స్థితి",
+        "hi": "सिस्टम स्थिति",
+        "ja": "システムステータス"
+      },
+      "kb_ready": {
+        "en": "Knowledge Base Ready",
+        "te": "జ్ఞాన పునాది సిద్ధం",
+        "hi": "ज्ञान आधार तैयार",
+        "ja": "ナレッジベース準備完了"
+      },
+      "kb_not_ready": {
+        "en": "Knowledge Base Not Available",
+        "te": "జ్ఞాన పునాది అందుబాటులో లేదు",
+        "hi": "ज्ञान आधार उपलब्ध नहीं है",
+        "ja": "ナレッジベース利用不可"
+      },
+      "clear_chat": {
+        "en": "Clear Chat",
+        "te": "చాట్ క్లియర్ చేయండి",
+        "hi": "चैट साफ़ करें",
+        "ja": "チャットをクリア"
+      }
+    }
+  },
+  "translator": {
+    "header": {
+      "en": "Medical Translator",
+      "te": "వైద్య అనువాదకుడు",
+      "hi": "चिकित्सा अनुवादक",
+      "ja": "医療翻訳者"
+    },
+    "input_label": {
+      "en": "Enter medical text to translate",
+      "te": "అనువదించడానికి వైద్య వచనాన్ని నమోదు చేయండి",
+      "hi": "अनुवाद करने के लिए चिकित्सा पाठ दर्ज करें",
+      "ja": "翻訳する医療テキストを入力してください"
+    },
+    "translate_button": {
+      "en": "Translate",
+      "te": "అనువదించు",
+      "hi": "अनुवाद करें",
+      "ja": "翻訳"
+    },
+    "result_label": {
+      "en": "Translation",
+      "te": "అనువాదం",
+      "hi": "अनुवाद",
+      "ja": "翻訳結果"
+    }
+  },
+  "symptoms": {
+    "header": {
+      "en": "Describe Your Symptoms",
+      "te": "మీ లక్షణాలను వివరించండి",
+      "hi": "अपने लक्षणों का वर्णन करें",
+      "ja": "症状を説明してください"
+    },
+    "input_label": {
+      "en": "Enter your symptoms here",
+      "te": "ఇక్కడ మీ లక్షణాలను నమోదు చేయండి",
+      "hi": "यहाँ अपने लक्षण दर्ज करें",
+      "ja": "ここに症状を入力してください"
+    },
+    "placeholder": {
+      "en": "Example: I have a fever, headache, and feel tired for 2 days",
+      "te": "ఉదాహరణ: నాకు జ్వరం, తలనొప్పి ఉన్నాయి, 2 రోజులుగా అలసిపోయినట్లు అనిపిస్తోంది",
+      "hi": "उदाहरण: मुझे बुखार, सिरदर्द है, और 2 दिनों से थका हुआ महसूस कर रहा हूँ",
+      "ja": "例：2日前から熱、頭痛があり、体がだるいです"
+    },
+    "analyze_button": {
+      "en": "Analyze Symptoms",
+      "te": "లక్షణాలను విశ్లేషించండి",
+      "hi": "लक्षणों का विश्लेषण करें",
+      "ja": "症状を分析する"
+    },
+    "analyzing": {
+      "en": "Analyzing your symptoms...",
+      "te": "మీ లక్షణాలను విశ్లేషిస్తోంది...",
+      "hi": "आपके लक्षणों का विश्लेषण हो रहा है...",
+      "ja": "症状を分析中..."
+    }
+  },
+  "results": {
+    "severity_label": {
+      "en": "Severity Level",
+      "te": "తీవ్రత స్థాయి",
+      "hi": "गंभीरता स्तर",
+      "ja": "重症度"
+    },
+    "confidence": {
+      "en": "Confidence",
+      "te": "నమ్మకం",
+      "hi": "विश्वास",
+      "ja": "信頼度"
+    },
+    "symptoms_found": {
+      "en": "Symptoms Detected",
+      "te": "గుర్తించిన లక్షణాలు",
+      "hi": "पहचाने गए लक्षण",
+      "ja": "検出された症状"
+    },
+    "advice": {
+      "en": "Medical Advice",
+      "te": "వైద్య సలహా",
+      "hi": "चिकित्सा सलाह",
+      "ja": "医療アドバイス"
+    },
+    "timeframe": {
+      "en": "Recommended Timeframe",
+      "te": "సిఫార్సు చేయబడిన సమయం",
+      "hi": "अनुशंसित समयसीमा",
+      "ja": "推奨される期間"
+    },
+    "when_to_see_doctor": {
+      "en": "When to See a Doctor",
+      "te": "డాక్టర్‌ను ఎప్పుడు చూడాలి",
+      "hi": "डॉक्टर को कब देखें",
+      "ja": "医師の診察を受けるべきタイミング"
+    },
+    "emergency_action": {
+      "en": "EMERGENCY ACTION REQUIRED",
+      "te": "అత్యవసర చర్య అవసరం",
+      "hi": "आपातकालीन कार्रवाई आवश्यक",
+      "ja": "緊急対応が必要です"
+    },
+    "seek_immediate": {
+      "en": "Seek immediate medical attention! Call emergency services now!",
+      "te": "వెంటనే వైద్య సంరక్షణ పొందండి! అత్యవసర సేవలను ఇప్పుడే కాల్ చేయండి!",
+      "hi": "तुरंत चिकित्सा ध्यान प्राप्त करें! अभी आपातकालीन सेवाओं को कॉल करें!",
+      "ja": "すぐに医師の診察を受けてください！今すぐ救急サービスに電話してください！"
+    }
+  },
+  "conditions": {
+    "common_cold": {
+      "en": "Common Cold",
+      "te": "సాధారణ జలుబు",
+      "hi": "सामान्य सर्दी",
+      "ja": "風邪"
+    },
+    "flu": {
+      "en": "Flu",
+      "te": "ఫ్లూ",
+      "hi": "फ्लू",
+      "ja": "インフルエンザ"
+    },
+    "covid19": {
+      "en": "COVID-19",
+      "te": "కోవిడ్-19",
+      "hi": "कोविड-19",
+      "ja": "新型コロナウイルス感染症"
+    },
+    "migraine": {
+      "en": "Migraine",
+      "te": "మైగ్రేన్",
+      "hi": "माइग्रेन",
+      "ja": "片頭痛"
+    },
+    "stomach_flu": {
+      "en": "Stomach Flu",
+      "te": "కడుపు ఫ్లూ",
+      "hi": "पेट का फ्लू",
+      "ja": "胃腸炎"
+    },
+    "allergies": {
+      "en": "Allergies",
+      "te": "అలెర్జీలు",
+      "hi": "एलर्जी",
+      "ja": "アレルギー"
+    },
+    "sore_throat": {
+      "en": "Sore Throat",
+      "te": "గొంతు నొప్పి",
+      "hi": "गले में खराश",
+      "ja": "喉の痛み"
+    },
+    "fever": {
+      "en": "Fever",
+      "te": "జ్వరం",
+      "hi": "बुखार",
+      "ja": "発熱"
+    },
+    "headache": {
+      "en": "Headache",
+      "te": "తలనొప్పి",
+      "hi": "सिरदर्द",
+      "ja": "頭痛"
+    },
+    "back_pain": {
+      "en": "Back Pain",
+      "te": "వెన్నునొప్పి",
+      "hi": "पीठ दर्द",
+      "ja": "背中の痛み"
+    },
+    "hypertension": {
+      "en": "Hypertension",
+      "te": "అధిక రక్తపోటు",
+      "hi": "उच्च रक्तचाप",
+      "ja": "高血圧"
+    },
+    "cancer": {
+      "en": "Cancer",
+      "te": "కర్కాటక వ్యాధి",
+      "hi": "कैंसर",
+      "ja": "癌"
+    },
+    "hiv": {
+      "en": "HIV/AIDS",
+      "te": "హెచ్ఐవి/ఎయిడ్స్",
+      "hi": "एचआईवी/एड्स",
+      "ja": "HIV/エイズ"
+    },
+    "diabetes": {
+      "en": "Diabetes",
+      "te": "మధుమేహం",
+      "hi": "मधुमेह",
+      "ja": "糖尿病"
+    }
+  },
+  "advice_messages": {
+    "emergency": {
+      "en": "Seek emergency care now. Do not wait.",
+      "te": "ఇప్పుడే అత్యవసర సంరక్షణ పొందండి. వేచి ఉండవద్దు.",
+      "hi": "अभी आपातकालीन देखभाल प्राप्त करें। प्रतीक्षा न करें।",
+      "ja": "今すぐ緊急医療機関を受診してください。待たないでください。"
+    },
+    "high": {
+      "en": "See a doctor within 24 hours. Your symptoms suggest you should see a healthcare provider soon.",
+      "te": "24 గంటల్లో డాక్టర్‌ను చూడండి. మీ లక్షణాలు మీరు త్వరలో ఆరోగ్య సంరక్షణ ప్రదాతను చూడాలని సూచిస్తున్నాయి.",
+      "hi": "24 घंटे के अंदर डॉक्टर को दिखाएं। आपके लक्षण बताते हैं कि आपको जल्द ही स्वास्थ्य सेवा प्रदाता को देखना चाहिए।",
+      "ja": "24時間以内に医師の診察を受けてください。症状から判断して、早めに医療機関を受診することをお勧めします。"
+    },
+    "moderate": {
+      "en": "Rest and monitor your symptoms. Stay home, hydrate, and rest.",
+      "te": "విశ్రాంతి తీసుకోండి మరియు మీ లక్షణాలను పరిశీలించండి. ఇంట్లోనే ఉండండి, నీరు త్రాగండి, విశ్రాంతి తీసుకోండి.",
+      "hi": "आराम करें और अपने लक्षणों की निगरानी करें। घर पर रहें, पानी पिएं, और आराम करें।",
+      "ja": "安静にして症状を観察してください。自宅で過ごし、水分を補給し、休息をとってください。"
+    },
+    "low": {
+      "en": "Self-care with over-the-counter remedies. Monitor your symptoms.",
+      "te": "ఓవర్-ది-కౌంటర్ నివారణలతో స్వయం సంరక్షణ. మీ లక్షణాలను పరిశీలించండి.",
+      "hi": "ओवर-दि-काउंटर उपचार से स्व-देखभाल करें। अपने लक्षणों की निगरानी करें।",
+      "ja": "市販薬でセルフケアを行ってください。症状を観察してください。"
+    },
+    "rest_hydrate": {
+      "en": "Rest, stay hydrated, and monitor your temperature.",
+      "te": "విశ్రాంతి తీసుకోండి, హైడ్రేటెడ్‌గా ఉండండి, మీ ఉష్ణోగ్రతను పరిశీలించండి.",
+      "hi": "आराम करें, हाइड्रेटेड रहें, और अपना तापमान मापते रहें।",
+      "ja": "安静にし、水分を補給し、体温を確認してください。"
+    },
+    "your_symptoms": {
+      "en": "your symptoms",
+      "te": "మీ లక్షణాలు",
+      "hi": "आपके लक्षण",
+      "ja": "あなたの症状"
+    }
+  },
+  "emergency_keywords": {
+    "unconscious": {
+      "en": "unconscious",
+      "te": "స్పృహ కోల్పోవడం",
+      "hi": "बेहोश",
+      "ja": "意識不明"
+    },
+    "chest_pain": {
+      "en": "chest pain",
+      "te": "ఛాతీ నొప్పి",
+      "hi": "सीने में दर्द",
+      "ja": "胸の痛み"
+    },
+    "difficulty_breathing": {
+      "en": "difficulty breathing",
+      "te": "శ్వాసకోశ సమస్య",
+      "hi": "सांस लेने में कठिनाई",
+      "ja": "呼吸困難"
+    },
+    "severe_bleeding": {
+      "en": "severe bleeding",
+      "te": "తీవ్ర రక్తస్రావం",
+      "hi": "गंभीर रक्तस्राव",
+      "ja": "激しい出血"
+    },
+    "heart_attack": {
+      "en": "heart attack",
+      "te": "గుండెపోటు",
+      "hi": "दिल का दौरा",
+      "ja": "心臓発作"
+    },
+    "stroke": {
+      "en": "stroke",
+      "te": "స్ట్రోక్",
+      "hi": "स्ट्रोक",
+      "ja": "脳卒中"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": {
+      "en": "Skip to main content",
+      "te": "ప్రధాన కంటెంట్‌కు దాటవేయండి",
+      "hi": "मुख्य सामग्री पर जाएं",
+      "ja": "メインコンテンツへスキップ"
+    },
+    "language_selector": {
+      "en": "Select your preferred language",
+      "te": "మీకు ఇష్టమైన భాషను ఎంచుకోండి",
+      "hi": "अपनी पसंदीदा भाषा चुनें",
+      "ja": "希望の言語を選択してください"
+    },
+    "symptom_input_aria": {
+      "en": "Enter your medical symptoms for analysis",
+      "te": "విశ్లేషణ కోసం మీ వైద్య లక్షణాలను నమోదు చేయండి",
+      "hi": "विश्लेषण के लिए अपने चिकित्सा लक्षण दर्ज करें",
+      "ja": "分析のために医療的な症状を入力してください"
+    },
+    "analysis_result": {
+      "en": "Analysis result",
+      "te": "విశ్లేషణ ఫలితం",
+      "hi": "विश्लेषण परिणाम",
+      "ja": "分析結果"
+    },
+    "emergency_alert": {
+      "en": "Emergency medical alert",
+      "te": "అత్యవసర వైద్య హెచ్చరిక",
+      "hi": "आपातकालीन चिकित्सा चेतावनी",
+      "ja": "緊急医療アラート"
+    }
+  }
+}

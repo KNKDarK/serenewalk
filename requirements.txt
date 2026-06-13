@@ -1,0 +1,14 @@
+streamlit
+llama-cpp-python
+requests
+streamlit-js-eval
+python-dotenv
+geopy
+chromadb
+sentence-transformers
+scikit-learn
+joblib
+pandas
+numpy
+torch
+torchvision

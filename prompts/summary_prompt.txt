@@ -1,0 +1,1 @@
+Extract key symptoms, duration, and severity from patient description. Format as brief clinical summary. Include only medically relevant information.

@@ -1,0 +1,22 @@
+# Models
+models/*.gguf
+models/*.bin
+models/*.pth
+models/*.onnx
+
+# Data
+data/kb/*.sqlite3
+data/kb/*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+
+# OS
+.DS_Store
+Thumbs.db

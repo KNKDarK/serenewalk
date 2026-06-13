@@ -1,0 +1,66 @@
+import streamlit as st
+import datetime
+
+st.set_page_config(page_title="AI Medical Advisor", page_icon="🩺", layout="wide")
+
+st.title("🩺 AI Medical Advisor")
+st.warning("⚠️ This is for informational purposes only. In emergencies, call emergency services.")
+
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+st.header("Describe Your Symptoms")
+user_input = st.text_area("", height=150, placeholder="Example: I have a fever, headache, and feel tired for 2 days")
+
+def get_advice(symptoms):
+    symptoms_lower = symptoms.lower()
+    if "chest pain" in symptoms_lower or "difficulty breathing" in symptoms_lower:
+        return "🚨 EMERGENCY: Seek immediate medical attention! Call emergency services now!"
+    elif "fever" in symptoms_lower:
+        return "💡 Advice: Rest, stay hydrated, monitor temperature. See a doctor if fever exceeds 103°F or lasts more than 3 days."
+    elif "headache" in symptoms_lower:
+        return "💡 Advice: Rest in a dark room, stay hydrated, apply cold compress. Seek medical care if severe or persistent."
+    elif "pain" in symptoms_lower:
+        return "💡 Advice: Rest the affected area, apply ice (first 48 hours) then heat. Consider OTC pain relievers if appropriate."
+    else:
+        return "💡 General advice: Monitor your symptoms, rest, stay hydrated. Contact a healthcare provider if symptoms persist or worsen."
+
+if st.button("Analyze Symptoms", type="primary"):
+    if user_input:
+        with st.spinner("Analyzing..."):
+            advice = get_advice(user_input)
+            st.info(advice)
+            st.session_state.chat_history.append({
+                "symptoms": user_input,
+                "advice": advice,
+                "time": datetime.datetime.now().strftime("%H:%M:%S")
+            })
+    else:
+        st.warning("Please describe your symptoms")
+
+if st.session_state.chat_history:
+    st.subheader("Recent Consultations")
+    for chat in reversed(st.session_state.chat_history[-3:]):
+        with st.expander(f"Consultation at {chat[time]}"):
+            st.write("**Symptoms:**", chat["symptoms"])
+            st.write("**Advice:**", chat["advice"])
+
+with st.sidebar:
+    st.header("Emergency Numbers")
+    st.write("""
+    - 🇺🇸 USA: **911**
+    - 🇬🇧 UK: **999**
+    - 🇪🇺 EU: **112**
+    - 🇮🇳 India: **102** or **108**
+    """)
+    st.header("When to Seek Emergency Care")
+    st.write("""
+    - Chest pain or pressure
+    - Difficulty breathing
+    - Sudden severe headache
+    - Loss of consciousness
+    - Severe bleeding
+    - Sudden confusion or weakness
+    """)
+
+st.caption("AI Medical Advisor | This is a demonstration system")
