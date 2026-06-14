@@ -1,158 +1,111 @@
+import re
 from typing import List, Optional
 
-MEDICAL_CONDITIONS = [
-    {
-        "condition": "Common Cold",
-        "symptoms": "runny nose, sneezing, sore throat, mild cough, slight fatigue, nasal congestion",
-        "treatment": "Rest, stay hydrated, use over-the-counter cold medications, saline nasal spray, honey for cough",
-        "when_to_see_doctor": "If symptoms persist beyond 10 days, high fever develops, or difficulty breathing occurs"
-    },
-    {
-        "condition": "Influenza (Flu)",
-        "symptoms": "high fever, body aches, fatigue, cough, sore throat, headache, chills",
-        "treatment": "Antiviral medications (if caught early), rest, hydration, fever reducers like acetaminophen or ibuprofen",
-        "when_to_see_doctor": "If high fever persists beyond 3 days, difficulty breathing, chest pain, or confusion"
-    },
-    {
-        "condition": "Migraine",
-        "symptoms": "severe headache, nausea, sensitivity to light, sensitivity to sound, visual aura, throbbing pain",
-        "treatment": "Rest in dark quiet room, caffeine, over-the-counter pain relievers, prescription migraine medications, cold compress",
-        "when_to_see_doctor": "If migraines are frequent, severe, or accompanied by fever, stiff neck, or neurological symptoms"
-    },
-    {
-        "condition": "Tension Headache",
-        "symptoms": "mild headache, dull aching sensation, scalp tenderness, neck pain, pressure around forehead",
-        "treatment": "Over-the-counter pain relievers, stress management, proper posture, adequate sleep, massage",
-        "when_to_see_doctor": "If headaches are persistent, worsen, or interfere with daily activities"
-    },
-    {
-        "condition": "Gastroenteritis (Stomach Flu)",
-        "symptoms": "nausea, vomiting, diarrhea, stomach cramps, mild fever, dehydration",
-        "treatment": "BRAT diet (bananas, rice, applesauce, toast), oral rehydration solutions, rest, avoid dairy and fatty foods",
-        "when_to_see_doctor": "If symptoms last more than 3 days, severe dehydration, bloody stool, or high fever"
-    },
-    {
-        "condition": "Allergic Rhinitis",
-        "symptoms": "sneezing, runny nose, itchy eyes, nasal congestion, watery eyes, itchy throat",
-        "treatment": "Antihistamines, nasal corticosteroid sprays, avoidance of allergens, air purifiers, saline nasal rinse",
-        "when_to_see_doctor": "If over-the-counter medications are not effective, or symptoms significantly impact quality of life"
-    },
-    {
-        "condition": "Bronchitis",
-        "symptoms": "persistent cough, mucus production, chest discomfort, fatigue, mild fever, shortness of breath",
-        "treatment": "Rest, hydration, cough suppressants, humidifier, bronchodilators if prescribed, avoid smoke",
-        "when_to_see_doctor": "If cough lasts more than 3 weeks, fever above 102°F, bloody mucus, or difficulty breathing"
-    },
-    {
-        "condition": "Strep Throat",
-        "symptoms": "severe sore throat, fever, swollen lymph nodes, white patches on tonsils, difficulty swallowing",
-        "treatment": "Antibiotics (prescribed), rest, warm salt water gargle, throat lozenges, hydration, soft foods",
-        "when_to_see_doctor": "If sore throat is severe, accompanied by fever, or persists more than 48 hours"
-    },
-    {
-        "condition": "Urinary Tract Infection (UTI)",
-        "symptoms": "frequent urination, burning sensation during urination, cloudy urine, pelvic pain, urgency",
-        "treatment": "Antibiotics (prescribed), increased water intake, cranberry juice, avoid irritants like caffeine, heating pad",
-        "when_to_see_doctor": "If symptoms are present, as UTI requires prescription antibiotics to prevent kidney infection"
-    },
-    {
-        "condition": "Sinusitis",
-        "symptoms": "facial pain, nasal congestion, headache, thick nasal discharge, fever, reduced sense of smell",
-        "treatment": "Nasal saline irrigation, steam inhalation, decongestants, pain relievers, warm compresses",
-        "when_to_see_doctor": "If symptoms persist more than 10 days, severe pain, high fever, or vision changes"
-    },
-    {
-        "condition": "Hypertension (High Blood Pressure)",
-        "symptoms": "often no symptoms, severe headache, shortness of breath, nosebleeds, chest pain, dizziness",
-        "treatment": "Lifestyle changes (diet, exercise, sodium reduction), antihypertensive medications, stress management",
-        "when_to_see_doctor": "Regular monitoring is essential; seek immediate care if BP is extremely high with symptoms"
-    },
-    {
-        "condition": "Type 2 Diabetes",
-        "symptoms": "increased thirst, frequent urination, fatigue, blurred vision, slow healing, tingling in extremities",
-        "treatment": "Blood sugar monitoring, metformin, lifestyle modifications, insulin if needed, regular exercise",
-        "when_to_see_doctor": "If you experience diabetes symptoms or have risk factors; regular checkups are essential"
-    },
-    {
-        "condition": "Asthma",
-        "symptoms": "wheezing, shortness of breath, chest tightness, coughing (especially at night), difficulty breathing",
-        "treatment": "Inhalers (rescue and maintenance), avoiding triggers, breathing exercises, allergy management",
-        "when_to_see_doctor": "If asthma attacks are frequent, severe, or rescue inhaler is not providing relief"
-    },
-    {
-        "condition": "Anxiety",
-        "symptoms": "excessive worry, restlessness, fatigue, difficulty concentrating, irritability, sleep problems, rapid heartbeat",
-        "treatment": "Therapy (CBT), medication (SSRIs), mindfulness, exercise, stress management techniques",
-        "when_to_see_doctor": "If anxiety interferes with daily life, causes panic attacks, or persists for weeks"
-    },
-    {
-        "condition": "Food Poisoning",
-        "symptoms": "nausea, vomiting, watery diarrhea, stomach cramps, fever, chills",
-        "treatment": "Hydration, rest, BRAT diet, avoid solid foods initially, electrolyte solutions",
-        "when_to_see_doctor": "If severe dehydration, bloody stool, high fever, or symptoms last more than 3 days"
-    },
-    {
-        "condition": "Pneumonia",
-        "symptoms": "high fever, cough with phlegm, shortness of breath, chest pain when breathing, fatigue",
-        "treatment": "Antibiotics (bacterial), antiviral medications, rest, hydration, fever reducers, oxygen therapy if severe",
-        "when_to_see_doctor": "Immediate medical attention required; pneumonia can be life-threatening without treatment"
-    },
-    {
-        "condition": "Chickenpox",
-        "symptoms": "itchy rash, red spots, blisters, fever, fatigue, loss of appetite, headache",
-        "treatment": "Calamine lotion, antihistamines, fever reducers, oatmeal baths, avoid scratching",
-        "when_to_see_doctor": "If rash spreads to eyes, high fever, difficulty breathing, or signs of skin infection"
-    },
-    {
-        "condition": "Ear Infection",
-        "symptoms": "ear pain, hearing difficulty, fever, fluid drainage, dizziness, irritability (in children)",
-        "treatment": "Antibiotics (if bacterial), pain relievers, warm compress, rest, avoid water in ear",
-        "when_to_see_doctor": "If ear pain is severe, accompanied by high fever, or symptoms persist more than 2 days"
-    },
-    {
-        "condition": "Conjunctivitis (Pink Eye)",
-        "symptoms": "redness in eye, itching, discharge, tearing, sensitivity to light, crusting of eyelids",
-        "treatment": "Antibiotic eye drops (bacterial), antihistamine drops (allergic), warm compress, good hygiene",
-        "when_to_see_doctor": "If vision changes, severe pain, or symptoms persist more than a few days"
-    },
-    {
-        "condition": "Back Pain",
-        "symptoms": "muscle ache, shooting pain, limited flexibility, pain radiating down leg, stiffness",
-        "treatment": "Rest (limited), ice/heat therapy, over-the-counter pain relievers, gentle stretching, proper posture",
-        "when_to_see_doctor": "If pain is severe, lasts more than 2 weeks, accompanied by numbness or leg weakness"
-    },
-    {
-        "condition": "Dehydration",
-        "symptoms": "thirst, dry mouth, dark urine, fatigue, dizziness, confusion, decreased urination",
-        "treatment": "Oral rehydration solution, water, electrolyte drinks, rest, avoid caffeine and alcohol",
-        "when_to_see_doctor": "If severe confusion, inability to keep fluids down, rapid heartbeat, or no urination for 8 hours"
-    },
-    {
-        "condition": "Heat Stroke",
-        "symptoms": "high body temperature, confusion, rapid pulse, headache, dizziness, nausea, red hot skin",
-        "treatment": "Immediate cooling, move to shade, cold water immersion, fanning, hydration if conscious",
-        "when_to_see_doctor": "EMERGENCY - call emergency services immediately; heat stroke is life-threatening"
-    },
-    {
-        "condition": "Skin Rash (Contact Dermatitis)",
-        "symptoms": "red rash, itching, dry cracked skin, blisters, burning sensation, swelling",
-        "treatment": "Topical corticosteroids, antihistamines, moisturizers, avoid irritants, cool compresses",
-        "when_to_see_doctor": "If rash is severe, covers large area, shows signs of infection, or doesn't improve in a week"
-    },
-    {
-        "condition": "Insomnia",
-        "symptoms": "difficulty falling asleep, waking frequently, fatigue, irritability, poor concentration, morning tiredness",
-        "treatment": "Sleep hygiene, consistent schedule, limiting screen time, relaxation techniques, CBT for insomnia",
-        "when_to_see_doctor": "If sleep problems persist for weeks and affect daily functioning"
-    },
-    {
-        "condition": "Acid Reflux (GERD)",
-        "symptoms": "heartburn, regurgitation, chest pain, difficulty swallowing, chronic cough, hoarseness",
-        "treatment": "Antacids, proton pump inhibitors, dietary changes, elevation of head while sleeping, weight loss",
-        "when_to_see_doctor": "If symptoms are frequent, severe, or over-the-counter medications are not effective"
-    }
-]
+_SUFFIXES = ["ing", "ed", "es", "s", "ly", "ion", "ions", "ness", "ment"]
 
+def _norm(word: str) -> str:
+    word = word.lower().strip(",.!?;:'\"()[]{}")
+    for s in _SUFFIXES:
+        if len(word) > 4 and word.endswith(s):
+            return word[:-len(s)]
+    return word
+
+MEDICAL_CONDITIONS = [
+    {"condition": "Common Cold", "symptoms": "runny nose, sneezing, sore throat, mild cough, slight fatigue, nasal congestion", "treatment": "Rest, stay hydrated, use over-the-counter cold medications, saline nasal spray, honey for cough", "when_to_see_doctor": "If symptoms persist beyond 10 days, high fever develops, or difficulty breathing occurs"},
+    {"condition": "Influenza (Flu)", "symptoms": "high fever, body aches, fatigue, cough, sore throat, headache, chills", "treatment": "Antiviral medications (if caught early), rest, hydration, fever reducers like acetaminophen or ibuprofen", "when_to_see_doctor": "If high fever persists beyond 3 days, difficulty breathing, chest pain, or confusion"},
+    {"condition": "Migraine", "symptoms": "severe headache, nausea, sensitivity to light, sensitivity to sound, visual aura, throbbing pain", "treatment": "Rest in dark quiet room, caffeine, over-the-counter pain relievers, prescription migraine medications, cold compress", "when_to_see_doctor": "If migraines are frequent, severe, or accompanied by fever, stiff neck, or neurological symptoms"},
+    {"condition": "Tension Headache", "symptoms": "mild headache, dull aching sensation, scalp tenderness, neck pain, pressure around forehead", "treatment": "Over-the-counter pain relievers, stress management, proper posture, adequate sleep, massage", "when_to_see_doctor": "If headaches are persistent, worsen, or interfere with daily activities"},
+    {"condition": "Gastroenteritis (Stomach Flu)", "symptoms": "nausea, vomiting, diarrhea, stomach cramps, mild fever, dehydration", "treatment": "BRAT diet (bananas, rice, applesauce, toast), oral rehydration solutions, rest, avoid dairy and fatty foods", "when_to_see_doctor": "If symptoms last more than 3 days, severe dehydration, bloody stool, or high fever"},
+    {"condition": "Allergic Rhinitis", "symptoms": "sneezing, runny nose, itchy eyes, nasal congestion, watery eyes, itchy throat", "treatment": "Antihistamines, nasal corticosteroid sprays, avoidance of allergens, air purifiers, saline nasal rinse", "when_to_see_doctor": "If over-the-counter medications are not effective, or symptoms significantly impact quality of life"},
+    {"condition": "Bronchitis", "symptoms": "persistent cough, mucus production, chest discomfort, fatigue, mild fever, shortness of breath", "treatment": "Rest, hydration, cough suppressants, humidifier, bronchodilators if prescribed, avoid smoke", "when_to_see_doctor": "If cough lasts more than 3 weeks, fever above 102F, bloody mucus, or difficulty breathing"},
+    {"condition": "Strep Throat", "symptoms": "severe sore throat, fever, swollen lymph nodes, white patches on tonsils, difficulty swallowing", "treatment": "Antibiotics (prescribed), rest, warm salt water gargle, throat lozenges, hydration, soft foods", "when_to_see_doctor": "If sore throat is severe, accompanied by fever, or persists more than 48 hours"},
+    {"condition": "Urinary Tract Infection (UTI)", "symptoms": "frequent urination, burning sensation during urination, cloudy urine, pelvic pain, urgency", "treatment": "Antibiotics (prescribed), increased water intake, cranberry juice, avoid irritants like caffeine, heating pad", "when_to_see_doctor": "If symptoms are present, as UTI requires prescription antibiotics to prevent kidney infection"},
+    {"condition": "Sinusitis", "symptoms": "facial pain, nasal congestion, headache, thick nasal discharge, fever, reduced sense of smell", "treatment": "Nasal saline irrigation, steam inhalation, decongestants, pain relievers, warm compresses", "when_to_see_doctor": "If symptoms persist more than 10 days, severe pain, high fever, or vision changes"},
+    {"condition": "Hypertension (High Blood Pressure)", "symptoms": "often no symptoms, severe headache, shortness of breath, nosebleeds, chest pain, dizziness", "treatment": "Lifestyle changes (diet, exercise, sodium reduction), antihypertensive medications, stress management", "when_to_see_doctor": "Regular monitoring is essential; seek immediate care if BP is extremely high with symptoms"},
+    {"condition": "Type 2 Diabetes", "symptoms": "increased thirst, frequent urination, fatigue, blurred vision, slow healing, tingling in extremities", "treatment": "Blood sugar monitoring, metformin, lifestyle modifications, insulin if needed, regular exercise", "when_to_see_doctor": "If you experience diabetes symptoms or have risk factors; regular checkups are essential"},
+    {"condition": "Asthma", "symptoms": "wheezing, shortness of breath, chest tightness, coughing (especially at night), difficulty breathing", "treatment": "Inhalers (rescue and maintenance), avoiding triggers, breathing exercises, allergy management", "when_to_see_doctor": "If asthma attacks are frequent, severe, or rescue inhaler is not providing relief"},
+    {"condition": "Anxiety", "symptoms": "excessive worry, restlessness, fatigue, difficulty concentrating, irritability, sleep problems, rapid heartbeat", "treatment": "Therapy (CBT), medication (SSRIs), mindfulness, exercise, stress management techniques", "when_to_see_doctor": "If anxiety interferes with daily life, causes panic attacks, or persists for weeks"},
+    {"condition": "Food Poisoning", "symptoms": "nausea, vomiting, watery diarrhea, stomach cramps, fever, chills", "treatment": "Hydration, rest, BRAT diet, avoid solid foods initially, electrolyte solutions", "when_to_see_doctor": "If severe dehydration, bloody stool, high fever, or symptoms last more than 3 days"},
+    {"condition": "Pneumonia", "symptoms": "high fever, cough with phlegm, shortness of breath, chest pain when breathing, fatigue", "treatment": "Antibiotics (bacterial), antiviral medications (viral), rest, hydration, fever reducers, oxygen therapy if severe", "when_to_see_doctor": "Immediate medical attention required; pneumonia can be life-threatening without treatment"},
+    {"condition": "Chickenpox", "symptoms": "itchy rash, red spots, blisters, fever, fatigue, loss of appetite, headache", "treatment": "Calamine lotion, antihistamines, fever reducers, oatmeal baths, avoid scratching", "when_to_see_doctor": "If rash spreads to eyes, high fever, difficulty breathing, or signs of skin infection"},
+    {"condition": "Ear Infection", "symptoms": "ear pain, hearing difficulty, fever, fluid drainage, dizziness, irritability (in children)", "treatment": "Antibiotics (if bacterial), pain relievers, warm compress, rest, avoid water in ear", "when_to_see_doctor": "If ear pain is severe, accompanied by high fever, or symptoms persist more than 2 days"},
+    {"condition": "Conjunctivitis (Pink Eye)", "symptoms": "redness in eye, itching, discharge, tearing, sensitivity to light, crusting of eyelids", "treatment": "Antibiotic eye drops (bacterial), antihistamine drops (allergic), warm compress, good hygiene", "when_to_see_doctor": "If vision changes, severe pain, or symptoms persist more than a few days"},
+    {"condition": "Back Pain", "symptoms": "muscle ache, shooting pain, limited flexibility, pain radiating down leg, stiffness", "treatment": "Rest (limited), ice/heat therapy, over-the-counter pain relievers, gentle stretching, proper posture", "when_to_see_doctor": "If pain is severe, lasts more than 2 weeks, accompanied by numbness or leg weakness"},
+    {"condition": "Dehydration", "symptoms": "thirst, dry mouth, dark urine, fatigue, dizziness, confusion, decreased urination", "treatment": "Oral rehydration solution, water, electrolyte drinks, rest, avoid caffeine and alcohol", "when_to_see_doctor": "If severe confusion, inability to keep fluids down, rapid heartbeat, or no urination for 8 hours"},
+    {"condition": "Heat Stroke", "symptoms": "high body temperature, confusion, rapid pulse, headache, dizziness, nausea, red hot skin", "treatment": "Immediate cooling, move to shade, cold water immersion, fanning, hydration if conscious", "when_to_see_doctor": "EMERGENCY - call emergency services immediately; heat stroke is life-threatening"},
+    {"condition": "Contact Dermatitis", "symptoms": "red rash, itching, dry cracked skin, blisters, burning sensation, swelling", "treatment": "Topical corticosteroids, antihistamines, moisturizers, avoid irritants, cool compresses", "when_to_see_doctor": "If rash is severe, covers large area, shows signs of infection, or does not improve in a week"},
+    {"condition": "Insomnia", "symptoms": "difficulty falling asleep, waking frequently, fatigue, irritability, poor concentration, morning tiredness", "treatment": "Sleep hygiene, consistent schedule, limiting screen time, relaxation techniques, CBT for insomnia", "when_to_see_doctor": "If sleep problems persist for weeks and affect daily functioning"},
+    {"condition": "Acid Reflux (GERD)", "symptoms": "heartburn, regurgitation, chest pain, difficulty swallowing, chronic cough, hoarseness", "treatment": "Antacids, proton pump inhibitors, dietary changes, elevation of head while sleeping, weight loss", "when_to_see_doctor": "If symptoms are frequent, severe, or over-the-counter medications are not effective"},
+    {"condition": "Gastritis", "symptoms": "burning stomach pain, nausea, vomiting, feeling full after eating, loss of appetite", "treatment": "Antacids, acid blockers, avoid spicy/fatty foods, smaller meals, stress reduction", "when_to_see_doctor": "If pain is severe, accompanied by vomiting blood or black stool"},
+    {"condition": "Peptic Ulcer", "symptoms": "burning stomach pain, feeling full, bloating, heartburn, nausea, blood in vomit or stool", "treatment": "Proton pump inhibitors, antibiotics (if H. pylori), antacids, avoid NSAIDs", "when_to_see_doctor": "If you vomit blood, have black/tarry stool, or severe abdominal pain - seek emergency care"},
+    {"condition": "Gastrointestinal Bleeding", "symptoms": "vomiting blood, coffee ground vomit, black tarry stool, bloody stool, abdominal pain, weakness, dizziness", "treatment": "EMERGENCY - immediate medical care, endoscopy, blood transfusion if needed, IV fluids", "when_to_see_doctor": "EMERGENCY - call emergency services immediately; GI bleeding can be life-threatening"},
+    {"condition": "Internal Bleeding", "symptoms": "vomiting blood, blood in urine, blood in stool, abdominal swelling, bruising, weakness, low blood pressure", "treatment": "EMERGENCY - immediate hospitalization, surgery may be needed, blood transfusion", "when_to_see_doctor": "EMERGENCY - call emergency services immediately"},
+    {"condition": "Hemorrhage", "symptoms": "severe bleeding, rapid heart rate, low blood pressure, pale skin, confusion, loss of consciousness", "treatment": "EMERGENCY - apply pressure to wound if external, call emergency services immediately,止血, blood transfusion", "when_to_see_doctor": "EMERGENCY - call emergency services or go to nearest emergency room immediately"},
+    {"condition": "Anaphylaxis", "symptoms": "difficulty breathing, swelling of throat, hives, rapid pulse, nausea, dizziness, low blood pressure", "treatment": "EMERGENCY - epinephrine auto-injector (EpiPen), call emergency services, antihistamines as follow-up", "when_to_see_doctor": "EMERGENCY - call emergency services immediately; anaphylaxis is life-threatening"},
+    {"condition": "Severe Allergic Reaction", "symptoms": "hives, swelling, difficulty breathing, wheezing, throat tightness, tongue swelling, rapid heartbeat", "treatment": "EMERGENCY - use epinephrine if available, call emergency services, antihistamines", "when_to_see_doctor": "EMERGENCY - call emergency services or go to nearest emergency room immediately"},
+    {"condition": "Heart Attack", "symptoms": "chest pain or pressure, pain radiating to arm or jaw, shortness of breath, cold sweat, nausea, lightheadedness", "treatment": "EMERGENCY - call emergency services immediately, chew aspirin if not allergic, CPR if unconscious", "when_to_see_doctor": "EMERGENCY - call emergency services immediately; every minute matters"},
+    {"condition": "Stroke", "symptoms": "sudden numbness or weakness of face/arm/leg, confusion, trouble speaking, vision loss, severe headache, dizziness", "treatment": "EMERGENCY - call emergency services immediately, note time symptoms started, keep patient calm", "when_to_see_doctor": "EMERGENCY - call emergency services immediately; FAST response saves lives"},
+    {"condition": "Seizure", "symptoms": "uncontrolled shaking, loss of consciousness, confusion, staring, jerking movements, loss of bladder control", "treatment": "Clear area of hazards, do not restrain, time the seizure, call emergency services if lasts >5 minutes", "when_to_see_doctor": "EMERGENCY - call emergency services if first seizure, lasts >5 minutes, or breathing difficulty"},
+    {"condition": "Overdose", "symptoms": "confusion, unconsciousness, slow or stopped breathing, vomiting, seizures, agitation, tiny or large pupils", "treatment": "EMERGENCY - call emergency services immediately, administer naloxone if opioid overdose suspected", "when_to_see_doctor": "EMERGENCY - call emergency services immediately; overdose can be fatal"},
+    {"condition": "Poisoning", "symptoms": "nausea, vomiting, abdominal pain, confusion, difficulty breathing, seizures, burns around mouth", "treatment": "Call poison control center immediately, do not induce vomiting unless instructed, remove contaminated clothing", "when_to_see_doctor": "EMERGENCY - call poison control or emergency services immediately"},
+    {"condition": "Choking", "symptoms": "inability to speak or cough, clutching throat, blue lips, panicked expression, wheezing", "treatment": "Heimlich maneuver (abdominal thrusts), back blows, call emergency services if unsuccessful", "when_to_see_doctor": "EMERGENCY - call emergency services immediately if airway cannot be cleared"},
+    {"condition": "Suicidal Thoughts", "symptoms": "talking about suicide, seeking means, hopelessness, withdrawal, mood swings, giving away possessions", "treatment": "EMERGENCY - call suicide prevention hotline (988 in US), remove means of harm, stay with person", "when_to_see_doctor": "EMERGENCY - call 988 Suicide Crisis Lifeline or emergency services immediately"},
+    {"condition": "Panic Attack", "symptoms": "chest pain, rapid heartbeat, shortness of breath, trembling, sweating, feeling of doom, dizziness", "treatment": "Deep breathing exercises, grounding techniques (5-4-3-2-1), focus on calming thoughts, seek therapy", "when_to_see_doctor": "If panic attacks are frequent, severe, or interfering with daily life"},
+    {"condition": "Appendicitis", "symptoms": "sharp abdominal pain (lower right), nausea, vomiting, fever, loss of appetite, swelling", "treatment": "EMERGENCY - surgical removal of appendix, antibiotics, pain management", "when_to_see_doctor": "EMERGENCY - seek immediate medical care; appendix can rupture within 24-48 hours"},
+    {"condition": "Kidney Stones", "symptoms": "severe back/side pain, pain during urination, pink/red/brown urine, nausea, vomiting, frequent urination", "treatment": "Pain management, hydration, medical procedures (lithotripsy) for large stones, strain urine", "when_to_see_doctor": "If pain is unbearable, accompanied by fever, or difficulty urinating"},
+    {"condition": "Meningitis", "symptoms": "high fever, severe headache, stiff neck, confusion, sensitivity to light, nausea, vomiting", "treatment": "EMERGENCY - antibiotics (bacterial), antiviral medications, hospitalization, corticosteroids", "when_to_see_doctor": "EMERGENCY - seek immediate medical care; meningitis can be fatal within hours"},
+    {"condition": "Sepsis", "symptoms": "high fever or low body temperature, rapid heart rate, rapid breathing, confusion, extreme pain, clammy skin", "treatment": "EMERGENCY - hospitalization, IV antibiotics, IV fluids, oxygen, organ support", "when_to_see_doctor": "EMERGENCY - call emergency services immediately; sepsis is life-threatening"},
+    {"condition": "Pulmonary Embolism", "symptoms": "sudden shortness of breath, chest pain (sharp, worsens with deep breath), coughing blood, rapid heartbeat", "treatment": "EMERGENCY - blood thinners, clot removal, hospitalization, oxygen therapy", "when_to_see_doctor": "EMERGENCY - call emergency services immediately; pulmonary embolism can be fatal"},
+    {"condition": "Diabetes Ketoacidosis", "symptoms": "excessive thirst, frequent urination, nausea, vomiting, abdominal pain, confusion, fruity breath", "treatment": "EMERGENCY - hospitalization, insulin therapy, IV fluids, electrolyte replacement", "when_to_see_doctor": "EMERGENCY - seek immediate medical care; diabetic ketoacidosis is life-threatening"},
+    {"condition": "Hypoglycemia (Low Blood Sugar)", "symptoms": "shaking, sweating, confusion, hunger, irritability, rapid heartbeat, dizziness, weakness", "treatment": "Consume fast-acting glucose (juice, candy, glucose tablets), recheck blood sugar, follow with protein", "when_to_see_doctor": "If unconscious or unable to swallow - call emergency services; glucagon injection may be needed"},
+    {"condition": "Acute Bronchitis", "symptoms": "cough with mucus, chest congestion, wheezing, fever, chills, sore throat, fatigue", "treatment": "Rest, hydration, cough suppressants, humidifier, honey, avoid smoke and irritants", "when_to_see_doctor": "If cough lasts more than 3 weeks, high fever, bloody mucus, or difficulty breathing"},
+    {"condition": "Tonsillitis", "symptoms": "sore throat, red swollen tonsils, white/yellow coating, fever, difficulty swallowing, swollen glands", "treatment": "Antibiotics (bacterial), pain relievers, warm salt water gargle, rest, hydration, soft foods", "when_to_see_doctor": "If severe pain, high fever persists, or difficulty breathing or swallowing"},
+    {"condition": "Laryngitis", "symptoms": "hoarseness, loss of voice, sore throat, dry cough, tickling sensation, dry throat", "treatment": "Voice rest, hydration, steam inhalation, throat lozenges, avoid whispering, avoid smoke", "when_to_see_doctor": "If hoarseness persists more than 2 weeks, or accompanied by severe pain"},
+    {"condition": "Croup", "symptoms": "barking cough, hoarseness, difficulty breathing, fever, stuffy nose, stridor (noisy breathing)", "treatment": "Cool mist humidifier, steam, corticosteroids, keep child calm, hydration", "when_to_see_doctor": "If difficulty breathing, stridor at rest, or symptoms are severe"},
+    {"condition": "Whooping Cough (Pertussis)", "symptoms": "severe coughing fits, whooping sound, vomiting after coughing, runny nose, fatigue", "treatment": "Antibiotics (early), hydration, rest, avoid triggers, vaccination for prevention", "when_to_see_doctor": "If coughing fits are severe, difficulty breathing, or symptoms in infant"},
+    {"condition": "Tuberculosis (TB)", "symptoms": "persistent cough (3+ weeks), chest pain, coughing blood, fatigue, weight loss, fever, night sweats", "treatment": "Long-term antibiotic regimen (6-9 months), directly observed therapy, rest, nutrition", "when_to_see_doctor": "If you have persistent cough with blood, unexplained weight loss, or exposure to TB"},
+    {"condition": "Hepatitis A", "symptoms": "fatigue, nausea, abdominal pain, loss of appetite, jaundice, dark urine, clay-colored stool, fever", "treatment": "Rest, hydration, avoid alcohol, supportive care, most recover without treatment, vaccination prevents", "when_to_see_doctor": "If you have jaundice, severe abdominal pain, or symptoms of liver failure"},
+    {"condition": "Hepatitis B", "symptoms": "abdominal pain, dark urine, fever, joint pain, loss of appetite, nausea, jaundice, fatigue", "treatment": "Antiviral medications, regular monitoring, liver cancer screening, vaccination prevents, avoid alcohol", "when_to_see_doctor": "If you have been exposed or have symptoms; chronic HBV requires specialist care"},
+    {"condition": "Cirrhosis", "symptoms": "fatigue, easy bruising, jaundice, swelling in legs/abdomen, confusion, weight loss, spider-like blood vessels", "treatment": "Treat underlying cause, avoid alcohol, diuretics, liver transplant if advanced, low-sodium diet", "when_to_see_doctor": "If you have liver disease symptoms or risk factors (alcohol, hepatitis)"},
+    {"condition": "Gallstones", "symptoms": "sudden intense abdominal pain (upper right), back pain between shoulder blades, nausea, vomiting", "treatment": "Surgical removal of gallbladder (cholecystectomy), low-fat diet, pain management", "when_to_see_doctor": "If pain is severe, accompanied by fever, jaundice, or symptoms persist"},
+    {"condition": "Pancreatitis", "symptoms": "upper abdominal pain radiating to back, fever, nausea, vomiting, rapid pulse, tenderness", "treatment": "Hospitalization, fasting, IV fluids, pain management, treat underlying cause (gallstones/alcohol)", "when_to_see_doctor": "EMERGENCY - seek immediate medical care; pancreatitis can be severe"},
+    {"condition": "Irritable Bowel Syndrome (IBS)", "symptoms": "abdominal pain, bloating, gas, diarrhea, constipation, mucus in stool, food intolerances", "treatment": "Dietary changes (low FODMAP), stress management, fiber supplements, antispasmodics, probiotics", "when_to_see_doctor": "If symptoms significantly affect quality of life, or you have unexplained weight loss"},
+    {"condition": "Celiac Disease", "symptoms": "diarrhea, bloating, gas, fatigue, weight loss, anemia, rash, joint pain, constipation", "treatment": "Strict lifelong gluten-free diet, vitamin supplements, regular follow-up, nutritionist guidance", "when_to_see_doctor": "If you suspect gluten intolerance or have family history of celiac disease"},
+    {"condition": "Hemorrhoids", "symptoms": "rectal bleeding, itching, pain during bowel movements, swelling around anus, lumps", "treatment": "High-fiber diet, hydration, warm baths, topical creams, avoid straining, stool softeners", "when_to_see_doctor": "If bleeding is heavy, pain is severe, or home treatments are not effective"},
+    {"condition": "Urinary Retention", "symptoms": "inability to urinate, painful urination, lower abdominal pain, frequent urination (small amounts)", "treatment": "Catheterization, treat underlying cause, medications (alpha blockers), surgery if needed", "when_to_see_doctor": "If unable to urinate at all - seek emergency care; can cause kidney damage"},
+    {"condition": "Kidney Infection (Pyelonephritis)", "symptoms": "high fever, chills, back/side pain, nausea, vomiting, frequent/painful urination, cloudy urine", "treatment": "Antibiotics (prescribed), hospitalization if severe, hydration, pain management, rest", "when_to_see_doctor": "If you have UTI symptoms with fever and back pain - seek medical care promptly"},
+    {"condition": "Bladder Infection (Cystitis)", "symptoms": "frequent urination, burning urination, cloudy urine, pelvic pressure, low fever, blood in urine", "treatment": "Antibiotics (prescribed), water, cranberry juice, avoid irritants, heating pad", "when_to_see_doctor": "If symptoms are present; untreated UTIs can spread to kidneys"},
+    {"condition": "Eczema (Atopic Dermatitis)", "symptoms": "dry itchy skin, red patches, thickened skin, oozing or crusting, sensitive skin, dark circles under eyes", "treatment": "Moisturizers, topical corticosteroids, antihistamines, avoid triggers, lukewarm baths", "when_to_see_doctor": "If severe itching affects sleep, signs of infection, or over-the-counter treatments fail"},
+    {"condition": "Psoriasis", "symptoms": "thick red patches with silvery scales, dry cracked skin, itching, burning, nail changes, joint pain", "treatment": "Topical treatments, phototherapy, systemic medications, biologics, moisturizers", "when_to_see_doctor": "If symptoms are widespread, severe, or affecting quality of life"},
+    {"condition": "Shingles (Herpes Zoster)", "symptoms": "painful rash (often on one side), blisters, burning sensation, fever, headache, sensitivity to touch", "treatment": "Antiviral medications (within 72 hours), pain management, calamine lotion, vaccination prevents", "when_to_see_doctor": "If you suspect shingles, especially if rash is near eyes or in immunocompromised person"},
+    {"condition": "Cellulitis", "symptoms": "red swollen skin, warmth, pain, fever, chills, red streaks, blisters, swollen lymph nodes", "treatment": "Antibiotics (oral or IV), elevation, rest, warm compress, pain management", "when_to_see_doctor": "If you have signs of skin infection with fever - seek medical care promptly"},
+    {"condition": "MRSA Infection", "symptoms": "red swollen bump that feels warm, pus, fever, chills, skin abscess, redness spreading rapidly", "treatment": "Antibiotics (specific for MRSA), wound drainage, hygiene, avoid sharing personal items", "when_to_see_doctor": "If you have a rapidly spreading skin infection or were exposed to MRSA"},
+    {"condition": "Osteoarthritis", "symptoms": "joint pain, stiffness (especially morning), reduced range of motion, swelling, bone spurs, grating sensation", "treatment": "Exercise, weight management, pain relievers, physical therapy, joint replacement (severe cases)", "when_to_see_doctor": "If joint pain interferes with daily activities or is not relieved by rest"},
+    {"condition": "Rheumatoid Arthritis", "symptoms": "joint pain/swelling (both sides), morning stiffness, fatigue, fever, weight loss, rheumatoid nodules", "treatment": "DMARDs, biologics, NSAIDs, physical therapy, exercise, joint protection techniques", "when_to_see_doctor": "If you have persistent joint pain and swelling, especially in multiple joints"},
+    {"condition": "Gout", "symptoms": "sudden intense joint pain (often big toe), swelling, redness, warmth, tenderness, fever", "treatment": "NSAIDs, colchicine, corticosteroids, dietary changes (low purine), hydration, weight loss", "when_to_see_doctor": "If you have sudden severe joint pain - treatment can reduce flare duration"},
+    {"condition": "Fibromyalgia", "symptoms": "widespread pain, fatigue, sleep problems, foggy thinking, headaches, irritable bowel, sensitivity", "treatment": "Exercise, pain management, sleep hygiene, stress reduction, medications (pregabalin, duloxetine)", "when_to_see_doctor": "If you have chronic widespread pain and fatigue for evaluation and diagnosis"},
+    {"condition": "Anemia", "symptoms": "fatigue, weakness, pale skin, shortness of breath, dizziness, cold hands/feet, chest pain, headache", "treatment": "Iron supplements (iron deficiency), B12 injections, treat underlying cause, dietary changes", "when_to_see_doctor": "If you have fatigue with shortness of breath or chest pain - seek evaluation"},
+    {"condition": "Thyroiditis (Hyperthyroidism)", "symptoms": "weight loss, rapid heartbeat, anxiety, tremors, sweating, heat intolerance, frequent bowel movements", "treatment": "Antithyroid medications, beta-blockers, radioactive iodine, surgery if needed", "when_to_see_doctor": "If you have unexplained weight loss, rapid heartbeat, or anxiety symptoms"},
+    {"condition": "Hypothyroidism", "symptoms": "fatigue, weight gain, cold intolerance, dry skin, hair loss, constipation, depression, slow heartbeat", "treatment": "Thyroid hormone replacement (levothyroxine), regular blood tests, adjust dosage as needed", "when_to_see_doctor": "If you have fatigue with weight gain and cold sensitivity - get thyroid checked"},
+    {"condition": "Deep Vein Thrombosis (DVT)", "symptoms": "swelling in one leg, pain/tenderness, warmth, red or discolored skin, visible surface veins", "treatment": "Blood thinners, compression stockings, elevation, walking, avoid prolonged sitting", "when_to_see_doctor": "EMERGENCY - if you have leg swelling with chest pain or shortness of breath (may be pulmonary embolism)"},
+    {"condition": "Vertigo (Benign Paroxysmal Positional Vertigo)", "symptoms": "dizziness, spinning sensation, loss of balance, nausea, vomiting, headache, triggered by head movement", "treatment": "Epley maneuver (canalith repositioning), balance exercises, medications for nausea", "when_to_see_doctor": "If vertigo is severe, accompanied by hearing loss, or neurological symptoms"},
+    {"condition": "Concussion", "symptoms": "headache, confusion, dizziness, nausea, sensitivity to light, balance problems, blurred vision, memory issues", "treatment": "Rest (physical and cognitive), avoid screens, gradual return to activities, pain management", "when_to_see_doctor": "If loss of consciousness, worsening symptoms, seizures, or repeated vomiting"},
+    {"condition": "Fracture (Broken Bone)", "symptoms": "severe pain, swelling, bruising, deformity, inability to bear weight, grinding sensation, visible bone (open fracture)", "treatment": "Immobilization (cast/splint), reduction if needed, pain management, surgery for severe fractures", "when_to_see_doctor": "If you suspect a fracture - seek medical care for proper diagnosis and treatment"},
+    {"condition": "Sprain", "symptoms": "pain, swelling, bruising, limited range of motion, popping sensation at time of injury, instability", "treatment": "RICE (Rest, Ice, Compression, Elevation), pain relievers, gradual return to activity, physical therapy", "when_to_see_doctor": "If severe pain, inability to bear weight, or joint feels unstable"},
+    {"condition": "Pregnancy (Ectopic)", "symptoms": "sharp abdominal pain, vaginal bleeding, shoulder pain, dizziness, fainting, low blood pressure", "treatment": "EMERGENCY - surgery (laparoscopy) or medication (methotrexate), blood transfusion if needed", "when_to_see_doctor": "EMERGENCY - call emergency services immediately; ectopic pregnancy is life-threatening"},
+    {"condition": "Miscarriage", "symptoms": "vaginal bleeding, abdominal cramps, back pain, tissue passing, loss of pregnancy symptoms", "treatment": "Rest, monitoring, dilation and curettage (D&C) if needed, emotional support, follow-up care", "when_to_see_doctor": "If you have vaginal bleeding during pregnancy - seek immediate evaluation"},
+    {"condition": "Premenstrual Syndrome (PMS)", "symptoms": "mood swings, bloating, breast tenderness, fatigue, food cravings, irritability, headache, joint pain", "treatment": "Exercise, dietary changes, stress management, OTC pain relievers, hormonal birth control", "when_to_see_doctor": "If symptoms are severe and significantly affect daily functioning"},
+    {"condition": "Menopause", "symptoms": "hot flashes, night sweats, irregular periods, vaginal dryness, mood changes, sleep problems, weight gain", "treatment": "Hormone replacement therapy (HRT), lifestyle modifications, vaginal moisturizers, calcium/vitamin D", "when_to_see_doctor": "If menopausal symptoms significantly affect quality of life"},
+    {"condition": "COVID-19", "symptoms": "fever, cough, shortness of breath, loss of taste/smell, fatigue, body aches, sore throat, congestion", "treatment": "Rest, hydration, fever reducers, isolation, antiviral medications (if high risk), vaccination prevents", "when_to_see_doctor": "If difficulty breathing, persistent chest pain, confusion, or bluish lips"},
+    {"condition": "Mononucleosis (Mono)", "symptoms": "extreme fatigue, fever, sore throat, swollen lymph nodes, headache, body aches, loss of appetite", "treatment": "Rest, hydration, fever reducers, avoid contact sports (risk of spleen rupture), time", "when_to_see_doctor": "If severe abdominal pain (upper left), difficulty breathing, or symptoms persist"},
+    {"condition": "Hand Foot and Mouth Disease", "symptoms": "fever, sore throat, rash on hands/feet, mouth blisters, loss of appetite, irritability", "treatment": "Rest, hydration, fever reducers, mouth rinses, avoid acidic/spicy foods, cool soft foods", "when_to_see_doctor": "If high fever persists, dehydration, or neurological symptoms"},
+    {"condition": "Dengue Fever", "symptoms": "high fever, severe headache, pain behind eyes, joint/muscle pain, rash, mild bleeding", "treatment": "Rest, hydration, fever reducers (avoid NSAIDs), hospitalization if severe, mosquito prevention", "when_to_see_doctor": "If severe abdominal pain, persistent vomiting, bleeding gums, or difficulty breathing"},
+    {"condition": "Malaria", "symptoms": "fever cycles (every 48-72 hours), chills, headache, Nausea, muscle pain, fatigue, sweating", "treatment": "Antimalarial medications (artemisinin-based), rest, hydration, mosquito prevention", "when_to_see_doctor": "If you have fever after traveling to malaria-endemic area - seek immediate testing"},
+    {"condition": "Tetanus", "symptoms": "jaw cramping, muscle stiffness, difficulty swallowing, fever, sweating, rapid heart rate", "treatment": "Tetanus immune globulin, wound care, antibiotics, muscle relaxants, vaccination prevents", "when_to_see_doctor": "If you have a deep wound and are due for tetanus booster, or symptoms of tetanus"},
+    {"condition": "Rabies", "symptoms": "fever, headache, excess salivation, hallucinations, hydrophobia, paralysis, confusion, agitation", "treatment": "Post-exposure prophylaxis (rabies vaccine + immune globulin) immediately after exposure", "when_to_see_doctor": "EMERGENCY - if bitten by potentially rabid animal, seek immediate medical care"},
+    {"condition": "Carbon Monoxide Poisoning", "symptoms": "headache, dizziness, weakness, nausea, confusion, chest pain, loss of consciousness", "treatment": "EMERGENCY - move to fresh air immediately, call emergency services, oxygen therapy", "when_to_see_doctor": "EMERGENCY - call emergency services immediately; carbon monoxide is deadly"},
+    {"condition": "Hypothermia", "symptoms": "shivering (early), confusion, loss of coordination, slow speech, slow breathing, blue lips, drowsiness", "treatment": "Warm gradually, remove wet clothing, warm blankets, warm drinks (if conscious), body heat", "when_to_see_doctor": "If severe confusion, loss of consciousness, or body temperature below 95F"},
+]
 
 class KnowledgeBase:
     def __init__(self, path: str = "data/kb"):
@@ -165,16 +118,22 @@ class KnowledgeBase:
             tokens = (c["condition"] + " " + c["symptoms"]).lower().split(", ")
             for t in tokens:
                 for word in t.split():
-                    self._index.append((word.strip().rstrip("s"), c))
+                    normalized = _norm(word)
+                    if normalized:
+                        self._index.append((normalized, c["condition"]))
 
     def retrieve(self, query: str, n_results: int = 2) -> List[str]:
-        query_words = set(query.lower().split())
+        query_words = [w for w in query.lower().split() if len(w) > 1]
+        query_norm = {_norm(w) for w in query_words}
+
         scores = {}
         for cond in self.conditions:
             text = (cond["condition"] + " " + cond["symptoms"]).lower()
-            match_count = sum(1 for word in query_words if word in text)
+            raw_words = set(text.split())
+            norm_words = {_norm(w) for w in raw_words}
+            match_count = len(query_norm & norm_words)
             if match_count > 0:
-                scores[cond["condition"]] = scores.get(cond["condition"], 0) + match_count
+                scores[cond["condition"]] = match_count
 
         if not scores:
             return []
