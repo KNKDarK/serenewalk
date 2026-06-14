@@ -1,30 +1,23 @@
 import streamlit as st
 import sys
 import os
-import functools
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from i18n.translator import t, translator, set_language, get_current_language
-from core.triage import triage
-from core.engine import MedicalEngine, get_medical_engine
+from core.engine import get_medical_engine
 
-# Initialize session state
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# Get shared medical engine
 engine = get_medical_engine()
 st.session_state.engine = engine
 
-# Ensure translator is synced with session state
 lang = st.session_state.get("language", "en")
 translator.set_language(lang)
 
-# Get current language - must be done AFTER syncing translator
 current_lang = get_current_language()
 
-# Page config - uses current language
 st.set_page_config(
     page_title=t("app.title"),
     page_icon="🩺",
@@ -32,18 +25,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Inject CSS
 st.markdown("""
 <style>
-/* ============================================================
-   FONT IMPORTS - Load all multilingual fonts
-   ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap');
-
-/* ============================================================
-   STEP 1: LOCK DOWN ALL MATERIAL SYMBOLS / ICONS FIRST
-   This must come before any custom font rules so !important wins
-   ============================================================ */
 .material-symbols-rounded,
 .material-symbols-sharp,
 .material-symbols-outlined,
@@ -55,46 +39,28 @@ st.markdown("""
     text-transform: none !important;
     font-size: inherit !important;
 }
-
-/* ============================================================
-   STEP 2: Apply custom multilingual fonts ONLY to safe areas
-   These do NOT touch expander summaries or sidebar toggles
-   ============================================================ */
-
-/* Medical content text */
 [data-testid="stMarkdownContainer"] p,
 [data-testid="stMarkdownContainer"] li,
 [data-testid="stMarkdownContainer"] ul,
 [data-testid="stMarkdownContainer"] ol {
     font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif;
 }
-
-/* Inputs */
 .stTextArea textarea,
 .stTextInput input {
     font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif;
 }
-
-/* Custom card elements */
 .emergency-banner, .emergency-header, .result-card, .card-title {
     font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif;
 }
-
-/* Metrics */
 [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
     font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif;
 }
-
-/* Premium UI Styles */
 .main {
     background-color: #0E1117;
 }
-
 [data-testid="stSidebar"] {
     background-color: #1A1C24;
 }
-
-/* Emergency Banner */
 .emergency-banner {
     background: linear-gradient(90deg, #FF4B4B 0%, #FF6B35 100%);
     color: white;
@@ -105,7 +71,6 @@ st.markdown("""
     position: relative;
     overflow: hidden;
 }
-
 .emergency-banner::before {
     content: "";
     position: absolute;
@@ -116,12 +81,10 @@ st.markdown("""
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
     animation: shine 3s infinite;
 }
-
 @keyframes shine {
     0% { left: -100%; }
     100% { left: 100%; }
 }
-
 .emergency-header {
     font-size: 28px;
     font-weight: 800;
@@ -131,20 +94,16 @@ st.markdown("""
     display: flex;
     align-items: center;
 }
-
 .siren-icon {
     font-size: 32px;
     margin-right: 16px;
     animation: pulse 1s infinite;
 }
-
 @keyframes pulse {
     0% { transform: scale(1); opacity: 1; }
     50% { transform: scale(1.2); opacity: 0.8; }
     100% { transform: scale(1); opacity: 1; }
 }
-
-/* Result Cards */
 .result-card {
     background-color: #262730;
     padding: 20px;
@@ -153,12 +112,10 @@ st.markdown("""
     height: 100%;
     transition: transform 0.2s;
 }
-
 .result-card:hover {
     transform: translateY(-4px);
     border-color: #FF6B35;
 }
-
 .card-title {
     color: #FF6B35;
     font-size: 18px;
@@ -167,18 +124,13 @@ st.markdown("""
     display: flex;
     align-items: center;
 }
-
 .card-icon {
     margin-right: 10px;
 }
-
-/* Fix for placeholders */
 ::placeholder {
     font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', 'Noto Color Emoji', sans-serif !important;
     opacity: 0.7;
 }
-
-/* General Layout Refinement */
 .stButton button {
     border-radius: 8px;
     font-weight: 600;
@@ -188,7 +140,6 @@ st.markdown("""
 
 st.markdown('<a href="#main-content" class="skip-link">' + t("accessibility.skip_to_content") + '</a>', unsafe_allow_html=True)
 
-# Main Content
 st.markdown(f'<div id="main-content" role="main">', unsafe_allow_html=True)
 
 st.title(t("app.title"))
@@ -196,7 +147,6 @@ st.markdown(f"**{t('app.subtitle')}**")
 
 st.warning(t("app.emergency_warning"))
 
-# Language selector toggle in sidebar
 st.sidebar.markdown(f"**{t('app.language_label')}**")
 row1 = st.sidebar.columns(2)
 with row1[0]:
@@ -274,7 +224,7 @@ st.sidebar.markdown("---")
 st.sidebar.header(t("app.sidebar.system_status"))
 
 status = st.session_state.engine.get_status()
-if status["kb_available"]:
+if status.get("kb_available"):
     st.sidebar.success("✅ " + t("app.sidebar.kb_ready"))
 else:
     st.sidebar.warning("⚠️ " + t("app.sidebar.kb_not_ready"))
@@ -283,25 +233,20 @@ if st.sidebar.button(t("app.sidebar.clear_chat"), use_container_width=True):
     st.session_state.chat_history = []
     st.rerun()
 
-# Medical Translator in sidebar
 st.sidebar.markdown("---")
 st.sidebar.header(t("translator.header"))
 trans_input = st.sidebar.text_area(t("translator.input_label"), height=100, key="trans_input")
 if st.sidebar.button(t("translator.translate_button"), use_container_width=True):
     if trans_input:
-        # Simple translation logic for common symptoms if LLM is not available
-        # In a real app, this would call an API or the LLM
         translation_result = st.session_state.engine.analyze(trans_input, lang=current_lang)
         st.sidebar.info(f"**{t('translator.result_label')}:**\n\n{translation_result['advice']}")
     else:
         st.sidebar.warning(t("translator.input_label"))
 
-# Clear sidebar
 st.sidebar.markdown('', unsafe_allow_html=True)
 
 st.markdown("---")
 
-# Symptoms input
 create_accessible_header = lambda text, level=1: st.markdown(f'<h{level} role="heading">{text}</h{level}>', unsafe_allow_html=True)
 
 create_accessible_header(t("symptoms.header"), level=2)
@@ -342,10 +287,9 @@ if analyze_clicked and user_input:
         st.success(f"{icon} {t('results.severity_label')}: **{result['triage_level']}**")
 
     st.markdown("---")
-    
-    # Custom Card Layout for Results
+
     col_cards = st.columns(2)
-    
+
     with col_cards[0]:
         st.markdown(f"""
             <div class="result-card">
@@ -354,7 +298,7 @@ if analyze_clicked and user_input:
                 <div style="color: #888;">{", ".join(result["symptoms"]) if result["symptoms"] else t('advice_messages.your_symptoms')}</div>
             </div>
         """, unsafe_allow_html=True)
-        
+
     with col_cards[1]:
         st.markdown(f"""
             <div class="result-card">
@@ -365,8 +309,7 @@ if analyze_clicked and user_input:
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    
-    # Advice Section
+
     if not result["is_emergency"]:
         st.info(f"**{t('results.advice')}:** {result['advice']}")
 

@@ -1,19 +1,18 @@
 import streamlit as st
 import sys
 import os
-import functools
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from i18n.translator import t, translator, set_language, get_current_language
-from core.triage import triage
-from core.engine import MedicalEngine
+from core.engine import get_medical_engine
 
 # Initialize session state
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
-if "engine" not in st.session_state:
-    st.session_state.engine = MedicalEngine()
+
+# Get shared medical engine (cached for performance)
+st.session_state.engine = get_medical_engine()
 
 # Ensure translator is synced with session state
 lang = st.session_state.get("language", "en")
