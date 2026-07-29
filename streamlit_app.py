@@ -68,12 +68,17 @@ st.markdown("""
     font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'Noto Sans JP', sans-serif !important;
 }
 
-/* ABSOLUTE ICON PROTECTION - Revert all suspected icon containers to native */
-[data-testid="stIcon"], [aria-hidden="true"], svg, i, 
-[data-testid*="Icon"], [data-testid="stExpander"] summary span, 
-[data-testid="stSidebar"] [role="button"] span, summary span {
-    font-family: 'streamlit-icons' !important;
+/* Icon protection - only target actual icon elements */
+.material-symbols-rounded,
+.material-symbols-sharp,
+.material-symbols-outlined,
+.material-icons,
+.stIcon,
+[data-testid="stIcon"] {
+    font-family: 'Material Symbols Rounded', 'Material Icons', 'streamlit-icons' !important;
+    font-variant-ligatures: common-ligatures !important;
     text-transform: none !important;
+    font-size: inherit !important;
 }
 
 /* Premium UI Styles */
