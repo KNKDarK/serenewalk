@@ -1,5 +1,7 @@
 # AI Medical Advisor
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](http://serenewalk-abyss.streamlit.app/)
+
 A self-improving, multilingual medical advice system with accessibility features. This application provides symptom triage, medical information retrieval, and AI-powered health guidance with support for multiple languages.
 
 ## Features
